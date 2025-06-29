@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ThemeProvider from "@/providers/theme-provider";
-import Header from "@/components/Header";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 import { currentUser } from "@clerk/nextjs/server";
+import LayoutProvider from "@/providers/layout-provider";
 
 export const metadata: Metadata = {
   title: "Venta de departamentos, casas y terrenos",
@@ -28,8 +28,11 @@ export default async function RootLayout({
     <ClerkProvider localization={esES}>
       <html lang="es" className="h-full">
         <body className="min-h-screen">
-          <Header />
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <LayoutProvider>
+              {children}
+            </LayoutProvider>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
