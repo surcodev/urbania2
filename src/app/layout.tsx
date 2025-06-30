@@ -1,28 +1,32 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import ThemeProvider from "@/providers/theme-provider";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 import { currentUser } from "@clerk/nextjs/server";
+import { cache } from "react"; // ✅ IMPORTANTE: cache de React
 import LayoutProvider from "@/providers/layout-provider";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Venta de departamentos, casas y terrenos",
   description: "Una sola parada para todas sus necesidades inmobiliarias",
 };
 
+// ✅ Cacheamos la llamada a currentUser
+const getClerkUser = cache(async () => await currentUser());
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const loggedInUser = await currentUser();
+  const loggedInUser = await getClerkUser();
+
   let username = loggedInUser?.username;
   if (!username) {
-    username = loggedInUser?.firstName + " " + loggedInUser?.lastName;
+    username = `${loggedInUser?.firstName ?? ""} ${loggedInUser?.lastName ?? ""}`.trim();
   }
-  username = username?.replace("null", "");
 
   return (
     <ClerkProvider localization={esES}>
