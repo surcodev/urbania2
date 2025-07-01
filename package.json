@@ -13,6 +13,7 @@
     "@clerk/nextjs": "^6.23.1",
     "@prisma/client": "^6.10.1",
     "antd": "^5.26.2",
+    "firebase": "^11.10.0",
     "next": "14.2.30",
     "react": "^18",
     "react-dom": "^18"

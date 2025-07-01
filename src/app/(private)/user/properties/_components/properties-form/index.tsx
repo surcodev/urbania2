@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Steps } from 'antd'
 
 import Basic from "./basic";
@@ -7,16 +7,24 @@ import Location from "./location";
 import Amenities from './amenities';
 import Media from "./media";
 import Contact from "./contact";
-import { PropertiesFormStepProps } from '@/interfaces';
 
-function PropertiesForm() {
+function PropertiesForm({
+    initialValues = {},
+    isEdit = false,
+}: {
+    initialValues?: any;
+    isEdit?: boolean;
+}) {
 
-    const [finalValues, setFinalValues] = React.useState({
-        basic: {},
-        location: {},
-        amenities: {},
-        media: {},
-        contact: {}
+    const [finalValues, setFinalValues] = useState({
+        basic: initialValues,
+        location: initialValues,
+        amenities: initialValues,
+        media: {
+            newlyUploadedFiles: [],
+            images: initialValues?.images || [],
+        },
+        contact: initialValues,
     });
     const [currentStep = 0, setCurrentStep] = useState(0);
     const commonPropsForSteps: any = {
@@ -48,6 +56,10 @@ function PropertiesForm() {
             content: <Contact {...commonPropsForSteps} />,
         },
     ];
+
+    useEffect(() => {
+        console.log(finalValues);
+    }, [finalValues])
 
     return (
         <div>
