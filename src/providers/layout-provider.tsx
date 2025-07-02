@@ -88,7 +88,7 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
     return (
       <div className="lg:px-20">
         <div className="flex items-center justify-between bg-primary p-4 h-3">
-          <h1 className="text-xl text-white font-bold">Urbania 2.0</h1>
+          <h1 className="text-xl text-white font-bold cursor-pointer" onClick={() => { router.push("/") }}>Urbania 2.0</h1>
 
           <div className="flex items-center space-x-4">
             <SignedOut>

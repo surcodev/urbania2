@@ -1,12 +1,21 @@
-'use client';
-import React, { useEffect, useState } from 'react'
-import { Steps } from 'antd'
-
+"use client";
+import React, { useEffect, useState } from "react";
+import { Steps } from "antd";
 import Basic from "./basic";
 import Location from "./location";
-import Amenities from './amenities';
+import Amenities from "./amenities";
 import Media from "./media";
 import Contact from "./contact";
+
+export interface PropertiesFormStepProps {
+    currentStep: number;
+    setCurrentStep: (currentStep: number) => void;
+    finalValues: any;
+    setFinalValues: (finalValues: any) => void;
+    loading: boolean;
+    setLoading: (loading: boolean) => void;
+    isEdit?: boolean;
+}
 
 function PropertiesForm({
     initialValues = {},
@@ -15,8 +24,7 @@ function PropertiesForm({
     initialValues?: any;
     isEdit?: boolean;
 }) {
-
-    const [finalValues, setFinalValues] = useState({
+    const [finalValues, setFinalValues] = React.useState({
         basic: initialValues,
         location: initialValues,
         amenities: initialValues,
@@ -26,25 +34,31 @@ function PropertiesForm({
         },
         contact: initialValues,
     });
-    const [currentStep = 0, setCurrentStep] = useState(0);
+
+    const [currentStep, setCurrentStep] = useState(0);
+    const [loading, setLoading] = useState(false);
+
     const commonPropsForSteps: any = {
         currentStep,
         setCurrentStep,
         finalValues,
-        setFinalValues
-    }
+        setFinalValues,
+        loading,
+        setLoading,
+        isEdit,
+    };
 
     const steps = [
         {
-            title: "Básico",
+            title: "Basic",
             content: <Basic {...commonPropsForSteps} />,
         },
         {
-            title: "Ubicación",
+            title: "Location",
             content: <Location {...commonPropsForSteps} />,
         },
         {
-            title: "Comodidades",
+            title: "Amenities",
             content: <Amenities {...commonPropsForSteps} />,
         },
         {
@@ -52,22 +66,27 @@ function PropertiesForm({
             content: <Media {...commonPropsForSteps} />,
         },
         {
-            title: "Contacto",
+            title: "Contact",
             content: <Contact {...commonPropsForSteps} />,
         },
     ];
 
     useEffect(() => {
         console.log(finalValues);
-    }, [finalValues])
+    }, [finalValues]);
 
     return (
         <div>
-            <Steps className="text-sm" current={currentStep} items={steps} />
+            <Steps
+                className="text-sm"
+                current={currentStep}
+                onChange={(step) => setCurrentStep(step)} // 🔥 permite hacer clic en cualquier paso
+                items={steps.map(({ title }) => ({ title }))}
+            />
 
             <div className="mt-8">{steps[currentStep].content}</div>
         </div>
-    )
+    );
 }
 
-export default PropertiesForm
+export default PropertiesForm;

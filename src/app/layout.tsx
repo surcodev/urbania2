@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import ThemeProvider from "@/providers/theme-provider";
-
 import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 import { currentUser } from "@clerk/nextjs/server";
-import { cache } from "react"; // ✅ IMPORTANTE: cache de React
+import { cache } from "react";
 import LayoutProvider from "@/providers/layout-provider";
 import "./globals.css";
+import 'remixicon/fonts/remixicon.css'
 
 export const metadata: Metadata = {
   title: "Venta de departamentos, casas y terrenos",
