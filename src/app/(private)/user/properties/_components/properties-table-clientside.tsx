@@ -1,8 +1,9 @@
 'use client'
 import { Property } from "@prisma/client";
-import { Button, Table } from "antd";
+import { Button, message, Table } from "antd";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
+import { DeleteProperty } from "@/actions/properties";
 import { useState } from "react";
 
 function ClientSidePropertiesTable({
@@ -14,6 +15,19 @@ function ClientSidePropertiesTable({
 }) {
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
+
+    const onDelete = async (id: string) => {
+        try {
+            setLoading(true);
+            const response = await DeleteProperty(id);
+            if (response.error) throw new Error(response.error);
+            message.success(response.message);
+        } catch (error: any) {
+            message.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const columns: any = [
         {
@@ -58,7 +72,7 @@ function ClientSidePropertiesTable({
                         >
                             Consultas
                         </Button>
-                        <Button size="small" >
+                        <Button size="small" onClick={() => onDelete(record.id)} >
                             <i className="ri-delete-bin-line"></i>
                         </Button>
                         <Button

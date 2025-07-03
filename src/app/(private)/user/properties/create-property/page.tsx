@@ -1,12 +1,25 @@
-import PageTitle from '@/components/page-title'
-import React from 'react'
-import PropertiesForm from '../_components/properties-form'
+import PageTitle from '@/components/page-title';
+import PropertiesForm from '../_components/properties-form';
+import { Property } from "@prisma/client";
+import prisma from "@/config/db";
 
-function CreatePropertyPage() {
+async function CreatePropertyPage({ searchParams }: { searchParams: any }) {
+
+    const cloneFrom = searchParams?.cloneFrom || "";
+    let property: Property | null = null;
+
+    if (cloneFrom) {
+        property = (await prisma.property.findUnique({
+            where: {
+                id: cloneFrom,
+            },
+        })) as Property;
+    }
+
     return (
         <div className='py-5 lg:px-20 px-5'>
             <PageTitle title='Crear propiedad' />
-            <PropertiesForm />
+            <PropertiesForm initialValues={property ? property : {}} />
         </div>
     )
 }
