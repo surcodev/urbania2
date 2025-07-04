@@ -3,7 +3,7 @@ import prisma from "@/config/db";
 import { Property } from "@prisma/client";
 import React from "react";
 import { Carousel } from "antd";
-// import QueryModal from "../_components/query-modal";
+import QueryModal from "../_components/query-modal";
 
 interface Props {
   params: {
@@ -115,7 +115,7 @@ async function PropertyPage({ params: { id } }: Props) {
             </div>
           )}
 
-          {/* <QueryModal propertyId={property.id} /> */}
+          <QueryModal propertyId={property.id} />
         </div>
       </div>
     </div>
