@@ -1,10 +1,11 @@
-'use client'
+"use client";
 import { Property } from "@prisma/client";
-import { Button, message, Table } from "antd";
+import { Button, Table, message } from "antd";
 import dayjs from "dayjs";
+import React from "react";
 import { useRouter } from "next/navigation";
 import { DeleteProperty } from "@/actions/properties";
-import { useState } from "react";
+import PropertyQueries from "./property-queries";
 
 function ClientSidePropertiesTable({
     properties,
@@ -13,7 +14,10 @@ function ClientSidePropertiesTable({
     properties: Property[];
     fromAdmin?: boolean;
 }) {
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = React.useState<boolean>(false); // [
+    const [showQueries, setShowQueries] = React.useState<boolean>(false);
+    const [selectedProperty, setSelectedProperty] =
+        React.useState<Property | null>(null);
     const router = useRouter();
 
     const onDelete = async (id: string) => {
@@ -68,11 +72,14 @@ function ClientSidePropertiesTable({
                     <div className="flex gap-5">
                         <Button
                             size="small"
-
+                            onClick={() => {
+                                setSelectedProperty(record);
+                                setShowQueries(true);
+                            }}
                         >
-                            Consultas
+                            Queries
                         </Button>
-                        <Button size="small" onClick={() => onDelete(record.id)} >
+                        <Button size="small" onClick={() => onDelete(record.id)}>
                             <i className="ri-delete-bin-line"></i>
                         </Button>
                         <Button
@@ -99,6 +106,18 @@ function ClientSidePropertiesTable({
         },
     ];
 
+    // if table is from admin, then show user column
+    if (fromAdmin) {
+        columns.unshift({
+            title: "User",
+            dataIndex: "user",
+            key: "user",
+            render(value: any, record: any) {
+                return <div className="flex gap-5">{record.user?.username}</div>;
+            },
+        });
+    }
+
     return (
         <div className="capitalize">
             <Table
@@ -108,8 +127,15 @@ function ClientSidePropertiesTable({
                 rowKey="id"
             />
 
+            {showQueries && (
+                <PropertyQueries
+                    selectedProperty={selectedProperty}
+                    showQueriesModal={showQueries}
+                    setShowQueriesModal={setShowQueries}
+                />
+            )}
         </div>
-    )
+    );
 }
 
-export default ClientSidePropertiesTable
+export default ClientSidePropertiesTable;
