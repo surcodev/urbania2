@@ -1,46 +1,46 @@
 "use client";
 import { Button, message } from "antd";
-import React from "react";
-// import { Elements } from "@stripe/react-stripe-js";
-// import { loadStripe } from "@stripe/stripe-js";
-// import { GetStripeClientSecret } from "@/actions/payments";
-// import CheckoutForm from "./checkout-form";
+import React, { useState } from "react";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { GetStripeClientSecret } from "@/actions/payments";
+import CheckoutForm from "./checkout-form";
 
-// const stripePromise = loadStripe(
-//   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-// );
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 function BuySubScription({ plan }: { plan: any }) {
-    const [clientSecret, setClientSecret] = React.useState<string>("");
-    const [loading, setLoading] = React.useState<boolean>(false);
-    const [showCheckoutForm, setShowCheckoutForm] =
-        React.useState<boolean>(false);
+  const [clientSecret, setClientSecret] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [showCheckoutForm, setShowCheckoutForm] =
+    React.useState<boolean>(false);
 
-    //   const getClientSecret = async () => {
-    //     try {
-    //       setLoading(true);
-    //       const response = await GetStripeClientSecret(plan.price);
-    //       if (response.error) throw new Error(response.error);
-    //       setClientSecret(response.clientSecret);
-    //       setShowCheckoutForm(true);
-    //     } catch (error: any) {
-    //       message.error(error.message);
-    //     } finally {
-    //       setLoading(false);
-    //     }
-    //   };
-    return (
-        <div>
-            <Button
-                block
-                disabled={plan.price === 0}
-                // onClick={getClientSecret}
-                loading={loading}
-            >
-                Buy Now
-            </Button>
+  const getClientSecret = async () => {
+    try {
+      setLoading(true);
+      const response = await GetStripeClientSecret(plan.price);
+      if (response.error) throw new Error(response.error);
+      setClientSecret(response.clientSecret);
+      setShowCheckoutForm(true);
+    } catch (error: any) {
+      message.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  return (
+    <div>
+      <Button
+        block
+        disabled={plan.price === 0}
+        onClick={getClientSecret}
+        loading={loading}
+      >
+        Buy Now
+      </Button>
 
-            {/* {clientSecret && showCheckoutForm && (
+      {clientSecret && showCheckoutForm && (
         <Elements
           stripe={stripePromise}
           options={{
@@ -53,9 +53,9 @@ function BuySubScription({ plan }: { plan: any }) {
             plan={plan}
           />
         </Elements>
-      )} */}
-        </div>
-    );
+      )}
+    </div>
+  );
 }
 
 export default BuySubScription;

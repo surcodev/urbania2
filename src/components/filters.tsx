@@ -6,11 +6,11 @@ import {
     propertyTypes,
 } from "@/constants";
 import { Button, Form, Input, InputNumber, Modal, Select, Tag } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 function Filters({ searchParams }: { searchParams: any }) {
-    const [showFiltersModal, setShowFiltersModal] = React.useState(false);
+    const [showFiltersModal, setShowFiltersModal] = useState(false);
 
     const router = useRouter();
     const pathname = usePathname();
@@ -35,7 +35,7 @@ function Filters({ searchParams }: { searchParams: any }) {
             <div className="flex justify-between p-5 border rounded-sm border-solid border-gray-300 mb-5 items-center mt-5">
                 <div>
                     {Object.keys(searchParams).length === 0 ? (
-                        <span className="text-gray-500 text-sm">No filters applied</span>
+                        <span className="text-gray-500 text-sm">No se aplicaron filtros</span>
                     ) : (
                         <div className="flex flex-wrap gap-5">
                             {Object.keys(searchParams).map((key) => {
@@ -74,7 +74,7 @@ function Filters({ searchParams }: { searchParams: any }) {
                             router.push(pathname);
                         }}
                     >
-                        Clear
+                        Limpiar
                     </Button>
                     <Button
                         type="primary"
@@ -82,7 +82,7 @@ function Filters({ searchParams }: { searchParams: any }) {
                             setShowFiltersModal(true);
                         }}
                     >
-                        Show Filters
+                        Mostrar filtros
                     </Button>
                 </div>
             </div>
@@ -91,7 +91,7 @@ function Filters({ searchParams }: { searchParams: any }) {
                 <Modal
                     title={
                         <h1 className="text-xl font-semibold text-primary text-center uppercase">
-                            Apply Filters
+                            Aplicar filtros
                         </h1>
                     }
                     open={showFiltersModal}
@@ -108,22 +108,22 @@ function Filters({ searchParams }: { searchParams: any }) {
                         initialValues={searchParams}
                     >
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                            <Form.Item label="Property Type" name="type">
+                            <Form.Item label="Tipo de propiedad" name="type">
                                 <Select options={propertyTypes} />
                             </Form.Item>
-                            <Form.Item label="Rent / Sale" name="status">
+                            <Form.Item label="Alquiler/venta" name="status">
                                 <Select options={propertyStatuses} />
                             </Form.Item>
-                            <Form.Item label="City" name="city">
+                            <Form.Item label="Ciudad" name="city">
                                 <Input />
                             </Form.Item>
-                            <Form.Item label="Age" name="age">
+                            <Form.Item label="Edad" name="age">
                                 <InputNumber className="w-full" />
                             </Form.Item>
-                            <Form.Item label="Furnishing" name="furnishing">
+                            <Form.Item label="Moviliario" name="furnishing">
                                 <Select options={furnishingTypes} />
                             </Form.Item>
-                            <Form.Item label="Parking" name="parking">
+                            <Form.Item label="Aparcamiento" name="parking">
                                 <Select options={parkingTypes} />
                             </Form.Item>
                         </div>
@@ -134,10 +134,10 @@ function Filters({ searchParams }: { searchParams: any }) {
                                     setShowFiltersModal(false);
                                 }}
                             >
-                                Cancel
+                                Cancelar
                             </Button>
                             <Button type="primary" htmlType="submit">
-                                Apply
+                                Aplicar
                             </Button>
                         </div>
                     </Form>
