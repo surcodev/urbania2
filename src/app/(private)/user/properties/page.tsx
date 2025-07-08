@@ -12,7 +12,7 @@ function Properties({ searchParams }: { searchParams: any }) {
       <div className="flex justify-between items-center">
         <PageTitle title="Properties" />
         <LinkButton
-          title="Create Property"
+          title="Crear propiedad"
           path="/user/properties/create-property"
         />
       </div>

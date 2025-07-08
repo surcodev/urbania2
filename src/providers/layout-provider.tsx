@@ -14,6 +14,7 @@ import { User } from "@/interfaces";
 import Loader from "@/components/Loader";
 import { Button, Dropdown, message } from "antd";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const userMenu = [
   {
@@ -59,6 +60,9 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
+  const isPublicRoute = ["sign-in", "sign-up"].includes(pathname.split("/")[1]);
+  const isAdminRoute = pathname.split("/")[1] === "admin";
+
   const hideHeader =
     pathname?.startsWith("/sign-in") || pathname?.startsWith("/sign-up");
 
@@ -86,15 +90,33 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
     if (hideHeader) return null;
 
     return (
-      <div className="lg:px-20">
-        <div className="flex items-center justify-between bg-primary p-4 h-3">
-          <h1 className="text-xl text-white font-bold cursor-pointer" onClick={() => { router.push("/") }}>Urbania 2.0</h1>
+      <div className="lg:px-20 mt-4">
+        <div className="flex items-center justify-between bg-white p-4 h-3">
+          <h1 className="text-xl text-black font-bold cursor-pointer" onClick={() => { router.push("/") }}>
+            <Image
+              src="/logo.png"
+              alt="Urbania 2.0 Logo"
+              width={143}  // Ajusta el tamaño a tu gusto
+              height={52}
+              priority
+            />
+          </h1>
 
           <div className="flex items-center space-x-4">
+            <div>
+              Inicio
+            </div>
+            <div>
+              Quienes somos
+            </div>
             <SignedOut>
-              <SignInButton />
+              <SignInButton>
+                <button className="bg-black text-white rounded px-4 py-2 hover:bg-gray-800 transition">
+                  Ingresar
+                </button>
+              </SignInButton>
               <SignUpButton>
-                <button>Sign Up</button>
+                <button className="bg-black text-white rounded px-4 py-2 hover:bg-gray-800 transition">Registro</button>
               </SignUpButton>
             </SignedOut>
 
@@ -130,16 +152,29 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
+  const getContent = () => {
+    if (isPublicRoute) return children;
+    if (loading) return <Loader />;
+    if (isAdminRoute && !currentUserData?.isAdmin)
+      return (
+        <div className="py-20 lg:px-20 px-5 text-center text-gray-600 text-sm">
+          No estás autorizado para ver esta página.
+        </div>
+      );
+    return <div className="py-5 lg:px-20 px-5">{children}</div>;
+  };
+
   return (
     <div>
       {getHeader()}
-      <div>
+      {getContent()}
+      {/* <div>
         {loading ? (
           <Loader />
         ) : (
           <div>{children}</div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 

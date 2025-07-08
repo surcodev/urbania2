@@ -1,70 +1,110 @@
-import { PropertiesFormStepProps } from '@/interfaces'
-import React from 'react'
-import { Button, Form, Input } from 'antd'
+'use client';
+
+import { PropertiesFormStepProps } from '@/interfaces';
+import React, { useState } from 'react';
+import { Button, Form, Input } from 'antd';
+import dynamic from 'next/dynamic';
+import { MapPin } from 'lucide-react';
+import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
+
+const GooglePlacesAutocomplete = dynamic(
+    () => import('react-google-places-autocomplete'),
+    { ssr: false }
+);
 
 function Location({ currentStep, setCurrentStep, finalValues, setFinalValues }: PropertiesFormStepProps) {
+    const [form] = Form.useForm();
+    const [addressValue, setAddressValue] = useState(finalValues?.location?.address || null);
+    const [coordinates, setCoordinates] = useState(finalValues?.location?.coordinates || null);
 
     const onFinish = (values: any) => {
-        setFinalValues({ ...finalValues, location: values });
-        setCurrentStep(currentStep + 1);
-    }
+        if (!addressValue || !coordinates) {
+            return; // Prevención extra (también puedes mostrar error visual si deseas)
+        }
 
-    // city , pincode , lanmark , address
+        setFinalValues({
+            ...finalValues,
+            location: {
+                ...values,
+                address: addressValue.label,
+                coordinates: coordinates
+            },
+        });
+
+        setCurrentStep(currentStep + 1);
+    };
+
     return (
-        <Form layout="vertical" onFinish={onFinish}
+        <Form
+            layout="vertical"
+            form={form}
+            onFinish={onFinish}
             initialValues={finalValues.location}
         >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                 <Form.Item
                     name="city"
                     label="Ciudad"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Por favor ingrese la ciudad!",
-                        },
-                    ]}
+                    rules={[{ required: true, message: "Por favor ingrese la ciudad!" }]}
                 >
                     <Input autoComplete="off" placeholder="Ciudad" />
                 </Form.Item>
+
                 <Form.Item
                     name="pincode"
-                    label="Codigo Postal"
-                    rules={[
-                        {
-                            required: true,
-                            message: "por favor ingrese el código postal!",
-                        },
-                    ]}
+                    label="Código Postal"
+                    rules={[{ required: true, message: "Por favor ingrese el código postal!" }]}
                 >
-                    <Input autoComplete="off" className="w-full" placeholder="Código Postal" />
+                    <Input autoComplete="off" placeholder="Código Postal" />
                 </Form.Item>
+
                 <Form.Item
                     name="landmark"
-                    label="Punto de referencia"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Por favor ingrese el punto de referencia!",
-                        },
-                    ]}
+                    label="Punto de Referencia"
+                    rules={[{ required: true, message: "Por favor ingrese el punto de referencia!" }]}
                 >
-                    <Input autoComplete="off" placeholder="Punto de referencia" />
+                    <Input autoComplete="off" placeholder="Punto de Referencia" />
                 </Form.Item>
+
+                {/* Campo de Dirección con Google Maps */}
                 <Form.Item
-                    name="address"
                     label="Dirección"
-                    rules={[
-                        {
-                            required: true,
-                            message: "por favor ingrese la dirección!",
-                        },
-                    ]}
+                    required
                     className="col-span-1 lg:col-span-3"
                 >
-                    <Input.TextArea autoComplete="off" rows={6} placeholder="Dirección" />
+                    <div className="flex items-center w-full">
+                        <MapPin className="h-10 w-10 p-2 rounded-l-lg text-primary bg-slate-100" />
+                        <GooglePlacesAutocomplete
+                            apiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY}
+                            selectProps={{
+                                placeholder: 'Buscar dirección de propiedad',
+                                isClearable: true,
+                                className: 'w-full',
+                                value: addressValue,
+                                onChange: (place) => {
+                                    setAddressValue(place);
+
+                                    if (place && place.label) {
+                                        geocodeByAddress(place.label)
+                                            .then(results => getLatLng(results[0]))
+                                            .then(({ lat, lng }) => {
+                                                setCoordinates({ lat, lng });
+                                            })
+                                            .catch(error => {
+                                                console.error('Error obteniendo lat/lng:', error);
+                                                setCoordinates(null);
+                                            });
+                                    } else {
+                                        setCoordinates(null);
+                                    }
+                                }
+                            }}
+                        />
+                    </div>
+
                 </Form.Item>
             </div>
+
             <div className="flex justify-end gap-5 mt-7">
                 <Button
                     disabled={currentStep === 0}
@@ -72,7 +112,7 @@ function Location({ currentStep, setCurrentStep, finalValues, setFinalValues }: 
                 >
                     Volver
                 </Button>
-                <Button htmlType="submit" type="primary">
+                <Button type="primary" htmlType="submit" disabled={!addressValue || !coordinates}>
                     Siguiente
                 </Button>
             </div>
@@ -80,4 +120,4 @@ function Location({ currentStep, setCurrentStep, finalValues, setFinalValues }: 
     );
 }
 
-export default Location
+export default Location;

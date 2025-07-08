@@ -1,25 +1,40 @@
 export const propertyTypes = [
     { value: "house", label: "Casa" },
     { value: "apartment", label: "Departamento" },
-    { value: "villa", label: "Villa" },
-    { value: "cottage", label: "Cabaña" },
     { value: "land", label: "Terreno" },
-    { value: "other", label: "Otro" },
 ];
 
 export const propertyStatuses = [
-    { value: "rent", label: "Renta" },
+    { value: "rent", label: "Alquiler" },
     { value: "sale", label: "Venta" },
 ];
 
 export const cities = [
-    "Lima",
+    "Amazonas",
+    "Áncash",
+    "Apurímac",
     "Arequipa",
-    "Ica",
-    "Piura",
-    "Loreto",
+    "Ayacucho",
+    "Cajamarca",
+    "Callao",       // Provincia Constitucional
     "Cusco",
-    "..."
+    "Huancavelica",
+    "Huánuco",
+    "Ica",
+    "Junín",
+    "La Libertad",
+    "Lambayeque",
+    "Lima",         // Departamento (no incluye Lima Metropolitana)
+    "Loreto",
+    "Madre de Dios",
+    "Moquegua",
+    "Pasco",
+    "Piura",
+    "Puno",
+    "San Martín",
+    "Tacna",
+    "Tumbes",
+    "Ucayali"
 ];
 
 export const parkingTypes = [
