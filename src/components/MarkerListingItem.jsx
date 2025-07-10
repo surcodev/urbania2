@@ -7,8 +7,7 @@ import React from 'react'
 function MarkerListingItem({ item, closeHandler }) {
     return (
         <div>
-            <div className=' 
-            rounded-lg cursor-pointer w-[180px]'>
+            <div className='rounded-lg cursor-pointer w-[180px]'>
                 <X onClick={() => closeHandler()} />
                 <Image src={item.listingImages[0].url}
                     width={800}

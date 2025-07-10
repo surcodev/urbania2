@@ -42,7 +42,7 @@ async function PropertyPage({ params: { id } }: Props) {
 
   return (
     <div className="py-5 lg:px-20 px-5">
-      <LinkButton title="Back to Properties" path="/" />
+      <LinkButton title="Volver a Propiedades" path="/" />
 
       <h1 className="text-2xl font-bold text-primary my-5">{property.name}</h1>
 

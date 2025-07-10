@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api'
 import MarkerItem from './MarkerItem'
 
@@ -9,15 +9,17 @@ const containerStyle = {
     borderRadius: 10
 }
 
-function GoogleMapSection({ coordinates, listing }) {
-    const [map, setMap] = useState(null)
+function GoogleMapSection({ listing }: { listing: { id: string; lat: number; lng: number }[] }) {
+    const [map, setMap] = useState<google.maps.Map | null>(null)
 
     const { isLoaded } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY
-    })
+        id: 'google-map-script', // 🔁 mismo ID en toda la app
+        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY || '',
+        libraries: ['places', 'maps'], // 🔁 incluye todas las librerías necesarias
+    });
 
-    const onLoad = useCallback(function callback(mapInstance) {
+
+    const onLoad = useCallback(function callback(mapInstance: google.maps.Map) {
         if (window.google && window.google.maps) {
             const bounds = new window.google.maps.LatLngBounds(
                 { lat: -17.0, lng: -80.0 }, // suroeste (ajustado)
@@ -42,11 +44,9 @@ function GoogleMapSection({ coordinates, listing }) {
                 mapContainerStyle={containerStyle}
                 onLoad={onLoad}
                 onUnmount={onUnmount}
-                gestureHandling="greedy"
             >
-                {listing.map((item, index) => (
+                {listing.map((item) => (
                     <MarkerItem
-                        key={index}
                         item={item}
                     />
                 ))}
@@ -55,4 +55,4 @@ function GoogleMapSection({ coordinates, listing }) {
     )
 }
 
-export default React.memo(GoogleMapSection)
+export default memo(GoogleMapSection)

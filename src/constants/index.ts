@@ -1,5 +1,4 @@
 export const propertyTypes = [
-    { value: "house", label: "Casa" },
     { value: "apartment", label: "Departamento" },
     { value: "land", label: "Terreno" },
 ];
