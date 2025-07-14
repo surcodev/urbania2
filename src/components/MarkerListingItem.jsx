@@ -9,10 +9,10 @@ function MarkerListingItem({ item, closeHandler }) {
         <div>
             <div className='rounded-lg cursor-pointer w-[180px]'>
                 <X onClick={() => closeHandler()} />
-                <Image src={item.listingImages[0].url}
+                <Image src={item.images[0]}
                     width={800}
                     height={150}
-                    alt={item.listingImages[0].url}
+                    alt={item.images[0].url}
                     className='rounded-lg w-[180px] object-cover h-[120px]'
                 />
                 <div className='flex mt-2 flex-col gap-2 p-2 bg-white '>
@@ -33,7 +33,7 @@ function MarkerListingItem({ item, closeHandler }) {
                         </h2>
 
                     </div>
-                    <Link href={'/view-listing/' + item.id} className='w-full'>
+                    <Link href={`/property/${item.id}`} className='w-full'>
                         <Button size="sm">Ver detalles</Button>
                     </Link>
                 </div>

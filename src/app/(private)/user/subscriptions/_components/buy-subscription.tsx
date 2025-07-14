@@ -35,9 +35,9 @@ function BuySubScription({ plan }: { plan: any }) {
         block
         disabled={plan.price === 0}
         onClick={getClientSecret}
-        loading={loading}
+
       >
-        Buy Now
+        Comprar ahora
       </Button>
 
       {clientSecret && showCheckoutForm && (

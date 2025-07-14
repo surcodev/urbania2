@@ -15,6 +15,7 @@ import Loader from "@/components/Loader";
 import { Button, Dropdown, message } from "antd";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 const userMenu = [
   {
@@ -104,10 +105,14 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center space-x-4">
             <div>
-              Inicio
+              <Link href="/">
+                Inicio
+              </Link>
             </div>
             <div>
-              Quienes somos
+              <Link href="/about-we">
+                Quienes somos
+              </Link>
             </div>
             <SignedOut>
               <SignInButton>
