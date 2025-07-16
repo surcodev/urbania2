@@ -13,7 +13,7 @@ async function SubscriptionsPage() {
     });
     return (
         <div className="py-5 lg:px-20 px-5">
-            <PageTitle title="Subscriptions" />
+            <PageTitle title="Suscripciones" />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {subscriptionPlans.map((plan) => {
