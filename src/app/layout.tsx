@@ -7,6 +7,7 @@ import { cache } from "react";
 import LayoutProvider from "@/providers/layout-provider";
 import "./globals.css";
 import 'remixicon/fonts/remixicon.css'
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Venta de departamentos, casas y terrenos",
@@ -37,6 +38,7 @@ export default async function RootLayout({
               {children}
             </LayoutProvider>
           </ThemeProvider>
+          <Footer />
         </body>
       </html>
     </ClerkProvider>
