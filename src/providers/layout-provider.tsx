@@ -114,6 +114,16 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
                 Quienes somos
               </Link>
             </div>
+            <div>
+              <Link href="/rent">
+                Alquiler
+              </Link>
+            </div>
+            <div>
+              <Link href="/sale">
+                Venta
+              </Link>
+            </div>
             <SignedOut>
               <SignInButton>
                 <button className="bg-black text-white rounded px-4 py-2 hover:bg-gray-800 transition">

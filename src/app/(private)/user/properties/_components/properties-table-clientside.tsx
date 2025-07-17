@@ -35,12 +35,12 @@ function ClientSidePropertiesTable({
 
     const columns: any = [
         {
-            title: "Property Name",
+            title: "Nombre de la propiedad",
             dataIndex: "name",
             key: "name",
         },
         {
-            title: "Price",
+            title: "Precio",
             dataIndex: "price",
             key: "price",
             render(price: number) {
@@ -48,24 +48,24 @@ function ClientSidePropertiesTable({
             },
         },
         {
-            title: "Type",
+            title: "Tipo",
             dataIndex: "type",
             key: "type",
         },
         {
-            title: "Status",
+            title: "Estado",
             dataIndex: "status",
             key: "status",
         },
         {
-            title: "Updated At",
+            title: "Actualizado en",
             dataIndex: "updatedAt",
             render(updatedAt: Date) {
                 return dayjs(updatedAt).format("DD MMM YYYY HH:mm A");
             },
         },
         {
-            title: "Actions",
+            title: "Acciones",
             dataIndex: "actions",
             render(value: any, record: Property) {
                 return (
@@ -77,7 +77,7 @@ function ClientSidePropertiesTable({
                                 setShowQueries(true);
                             }}
                         >
-                            Queries
+                            Consultas
                         </Button>
                         <Button size="small" onClick={() => onDelete(record.id)}>
                             <i className="ri-delete-bin-line"></i>

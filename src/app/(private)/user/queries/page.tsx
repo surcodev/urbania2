@@ -15,10 +15,10 @@ async function QueriesPage() {
     },
   });
   console.log(queries);
-  
+
   return (
     <div className="py-5 lg:px-20 px-5">
-      <PageTitle title="Queries" />
+      <PageTitle title="Consultas" />
       <UserQueriesTable queries={queries} />
     </div>
   );
