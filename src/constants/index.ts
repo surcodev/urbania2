@@ -1,11 +1,11 @@
 export const propertyTypes = [
-    { value: "apartment", label: "Departamento" },
-    { value: "land", label: "Terreno" },
+    { value: "Departamento", label: "Departamento" },
+    { value: "Terreno", label: "Terreno" },
 ];
 
 export const propertyStatuses = [
-    { value: "rent", label: "Alquiler" },
-    { value: "sale", label: "Venta" },
+    { value: "Alquiler", label: "Alquiler" },
+    { value: "Venta", label: "Venta" },
 ];
 
 export const cities = [
@@ -37,26 +37,25 @@ export const cities = [
 ];
 
 export const parkingTypes = [
-    { value: "covered", label: "Cubierto" },
-    { value: "open", label: "Abierto" },
-    { value: "none", label: "Ninguno" },
+    { value: "Con cochera", label: "Con cochera" },
+    { value: "Sin cochera", label: "Sin cochera" },
 ];
 
 export const furnishingTypes = [
-    { value: "furnished", label: "Amueblado" },
-    { value: "semi-furnished", label: "Semi-amueblado" },
-    { value: "unfurnished", label: "Sin amueblar" },
+    { value: "Amueblado", label: "Amueblado" },
+    { value: "Semi-amueblado", label: "Semi-amueblado" },
+    { value: "Sin amueblar", label: "Sin amueblar" },
 ];
 
 export const facingTypes = [
-    { value: "east", label: "Este" },
-    { value: "west", label: "Oeste" },
-    { value: "north", label: "Norte" },
-    { value: "south", label: "Sur" },
-    { value: "north-east", label: "Nordeste" },
-    { value: "north-west", label: "Noroeste" },
-    { value: "south-east", label: "Sudeste" },
-    { value: "south-west", label: "Suroeste" },
+    { value: "Este", label: "Este" },
+    { value: "Oeste", label: "Oeste" },
+    { value: "Norte", label: "Norte" },
+    { value: "Sur", label: "Sur" },
+    { value: "Nordeste", label: "Nordeste" },
+    { value: "Noroeste", label: "Noroeste" },
+    { value: "Sudeste", label: "Sudeste" },
+    { value: "Suroeste", label: "Suroeste" },
 ];
 
 export const subscriptionPlans = [
@@ -72,7 +71,6 @@ export const subscriptionPlans = [
             "3 imágenes por propiedad",
             "Límite de 3 propiedades",
             "Búsqueda de propiedades",
-
         ],
     },
     {
@@ -88,7 +86,6 @@ export const subscriptionPlans = [
             "Búsqueda de propiedades",
             "Soporte con IA",
             "Soporte 24/7 por correo electrónico",
-
         ],
     },
     {
@@ -106,7 +103,6 @@ export const subscriptionPlans = [
             "Soporte 24/7 por correo electrónico",
             "Soporte 24/7 por teléfono",
             "Gerente de cuenta personal",
-
         ],
     },
 ];
