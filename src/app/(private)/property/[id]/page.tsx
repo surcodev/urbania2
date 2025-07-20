@@ -98,7 +98,7 @@ async function PropertyPage({ params: { id } }: Props) {
 
           <p className="text-sm text-gray-600 mt-7">{property.description}</p>
 
-          <GoogleMapHome listing={property} />
+
         </div>
 
         <div className="border border-solid border-gray-300 rounded p-5">

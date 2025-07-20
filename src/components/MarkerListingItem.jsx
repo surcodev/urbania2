@@ -5,14 +5,18 @@ import Link from 'next/link'
 import React from 'react'
 
 function MarkerListingItem({ item, closeHandler }) {
+    console.log("Item en MarkerListingItem:", item);
+
+
     return (
         <div>
             <div className='rounded-lg cursor-pointer w-[180px]'>
                 <X onClick={() => closeHandler()} />
-                <Image src={item.images[0]}
+                <Image
+                    src={item.images?.[0] || '/logo.png'}
                     width={800}
                     height={150}
-                    alt={item.images[0].url}
+                    alt="Imagen de propiedad"
                     className='rounded-lg w-[180px] object-cover h-[120px]'
                 />
                 <div className='flex mt-2 flex-col gap-2 p-2 bg-white '>

@@ -49,9 +49,10 @@ function GoogleMapSection({ listing }: { listing: { id: string; lat: number; lng
                 onLoad={onLoad}
                 onUnmount={onUnmount}
             >
-                {listing.map((item) => (
+                {Array.isArray(listing) && listing.map((item) => (
                     <MarkerItem key={item.id} item={item} />
                 ))}
+
             </GoogleMap>
         </div>
     );

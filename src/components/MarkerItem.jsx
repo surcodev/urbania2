@@ -4,21 +4,22 @@ import MarkerListingItem from './MarkerListingItem';
 
 function MarkerItem({ item }) {
     const [selectedListing, setSelectedListing] = useState();
+    const coordinates = { lat: item.coordinates.lat, lng: item.coordinates.lng };
     return (
         <div>
             <MarkerF
-                position={item.coordinates}
+                position={coordinates}
                 onClick={() => setSelectedListing(item)}
                 icon={{
-                    url: '/pin.png',
+                    url: 'pin.png',
                     scaledSize: {
-                        width: 30,
-                        height: 30
+                        width: 60,
+                        height: 60
                     }
                 }}
             >
                 {selectedListing && <OverlayView
-                    position={selectedListing.coordinates}
+                    position={coordinates}
                     mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
                 >
                     <div>
@@ -26,12 +27,11 @@ function MarkerItem({ item }) {
                             closeHandler={() => setSelectedListing(null)}
                             item={selectedListing} />
                     </div>
-
                 </OverlayView>}
-
             </MarkerF>
         </div>
     )
 }
+
 
 export default MarkerItem
