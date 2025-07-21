@@ -17,8 +17,6 @@ async function Account() {
     orderBy: { createdAt: "desc" },
   });
 
-  console.log(userSubscription);
-
   const getSectionTitle = (title: string) => {
     return (
       <div>

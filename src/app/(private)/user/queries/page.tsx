@@ -14,7 +14,6 @@ async function QueriesPage() {
       property: true,
     },
   });
-  console.log(queries);
 
   return (
     <div className="py-5 lg:px-20 px-5">

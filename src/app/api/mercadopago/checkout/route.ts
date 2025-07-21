@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { MercadoPagoConfig, Preference } from "mercadopago";
+import { GetCurrentUserFromMongoDB } from "@/actions/users";
 
 export const mercadopago = new MercadoPagoConfig({
     accessToken: process.env.MP_ACCESS_TOKEN!,
@@ -10,6 +11,15 @@ export async function POST(req: Request) {
     const { plan } = body;
 
     try {
+        const baseUrl = process.env.URL_NGROK!;
+
+        const user = await GetCurrentUserFromMongoDB();
+        console.log(user.data?.id);
+
+        if (!user || !user.data?.id) {
+            return NextResponse.json({ error: "Usuario no autenticado" }, { status: 401 });
+        }
+
         const preference = await new Preference(mercadopago).create({
             body: {
                 items: [
@@ -20,12 +30,19 @@ export async function POST(req: Request) {
                         quantity: 1,
                     },
                 ],
+                payment_methods: {
+                    installments: 1
+                },
                 back_urls: {
-                    success: "http://localhost:3000/pagos/exito",
-                    failure: "http://localhost:3000/pagos/error",
-                    pending: "http://localhost:3000/pagos/pendiente",
+                    success: `${baseUrl}/success`,
+                    failure: "https://google.es/failure",
+                    pending: "https://google.es/pending",
                 },
                 auto_return: "approved",
+                metadata: {
+                    userId: user?.data?.id, // 👈 aquí pasas el userId
+                    plan: plan.name,
+                },
             }
         });
 

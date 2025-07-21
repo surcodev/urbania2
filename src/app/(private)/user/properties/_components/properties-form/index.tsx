@@ -72,7 +72,6 @@ function PropertiesForm({
     ];
 
     useEffect(() => {
-        console.log(finalValues);
     }, [finalValues]);
 
     return (

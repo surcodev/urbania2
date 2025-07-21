@@ -5,8 +5,6 @@ import Link from 'next/link'
 import React from 'react'
 
 function MarkerListingItem({ item, closeHandler }) {
-    console.log("Item en MarkerListingItem:", item);
-
 
     return (
         <div>
