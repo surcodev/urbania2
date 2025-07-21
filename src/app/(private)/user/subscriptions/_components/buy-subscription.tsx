@@ -1,59 +1,42 @@
 "use client";
+
 import { Button, message } from "antd";
 import React, { useState } from "react";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import { GetStripeClientSecret } from "@/actions/payments";
-import CheckoutForm from "./checkout-form";
-
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
 
 function BuySubScription({ plan }: { plan: any }) {
-  const [clientSecret, setClientSecret] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [showCheckoutForm, setShowCheckoutForm] =
-    React.useState<boolean>(false);
 
-  const getClientSecret = async () => {
+  const handleBuy = async () => {
     try {
       setLoading(true);
-      const response = await GetStripeClientSecret(plan.price);
-      if (response.error) throw new Error(response.error);
-      setClientSecret(response.clientSecret);
-      setShowCheckoutForm(true);
+      const response = await fetch("/api/mercadopago/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ plan }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.init_point) {
+        // Redirige al usuario a Mercado Pago
+        window.location.href = data.init_point;
+      } else {
+        throw new Error(data.error || "Error al crear la preferencia");
+      }
     } catch (error: any) {
-      message.error(error.message);
+      message.error(error.message || "Ocurrió un error");
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div>
-      <Button
-        block
-        disabled={plan.price === 0}
-        onClick={getClientSecret}
-        loading={loading}
-      >
+      <Button block onClick={handleBuy} loading={loading} disabled={plan.price === 0}>
         Comprar ahora
       </Button>
-
-      {clientSecret && showCheckoutForm && (
-        <Elements
-          stripe={stripePromise}
-          options={{
-            clientSecret: clientSecret,
-          }}
-        >
-          <CheckoutForm
-            showCheckoutForm={showCheckoutForm}
-            setShowCheckoutForm={setShowCheckoutForm}
-            plan={plan}
-          />
-        </Elements>
-      )}
     </div>
   );
 }
