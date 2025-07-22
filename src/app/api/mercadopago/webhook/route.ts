@@ -1,5 +1,3 @@
-// ✅ Nuevo webhook corregido para MercadoPago
-
 import { NextResponse } from "next/server";
 import { SaveSubscription } from "@/actions/subscriptions";
 
@@ -14,11 +12,14 @@ export async function POST(req: Request) {
         if (topic === "payment") {
             const paymentId = data.id || data.payment_id;
 
-            const mpRes = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
-                headers: {
-                    Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
-                },
-            });
+            const mpRes = await fetch(
+                `https://api.mercadopago.com/v1/payments/${paymentId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
+                    },
+                }
+            );
 
             if (!mpRes.ok) {
                 throw new Error("No se pudo obtener el detalle del pago desde MercadoPago");
@@ -28,13 +29,41 @@ export async function POST(req: Request) {
             console.log("✅ Detalles del pago:", payment);
 
             if (payment.status === "approved") {
-                const plan = {
-                    title: payment.additional_info?.items?.[0]?.title || "Sin Título",
-                    price: payment.transaction_amount || 0,
+                const userId = payment.metadata?.user_id;
+                const planTitle = payment.metadata?.plan || "Standard"; // O también podrías seguir usando el title desde additional_info
+
+                // Mapeo de planes
+                const plans: Record<string, any> = {
+                    Standard: {
+                        name: "Standard",
+                        price: payment.transaction_amount || 0,
+                        propertiesLimit: 10,
+                        imagesPerPropertyLimit: 5,
+                        features: [
+                            "Property Listing",
+                            "Property Details",
+                            "5 Images per Property",
+                            "10 Properties Limit",
+                            "Property Search",
+                            "AI Support",
+                            "24/7 Support on Email",
+                        ],
+                    },
                 };
 
+                const plan = plans[planTitle];
+
+                if (!plan) {
+                    throw new Error(`Plan no reconocido: ${planTitle}`);
+                }
+
+                console.log("[+] UserId:", userId);
+                console.log("[+] PaymentId:", payment.id);
+                console.log("[+] Plan seleccionado:", plan);
+
                 await SaveSubscription({
-                    paymentId: payment.id,
+                    userId,               // 👈 Lo pasas directamente
+                    paymentId: String(payment.id),
                     plan,
                 });
 

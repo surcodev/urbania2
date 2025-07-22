@@ -30,7 +30,7 @@ async function SubscriptionsPage() {
                             <div className="flex flex-col gap-3">
                                 <h1 className="text-xl font-bold text-primary">{plan.name}</h1>
                                 <h1 className="text-orange-700 text-2xl lg:text-5xl font-bold">
-                                    ${plan.price}
+                                    S/ {plan.price}
                                 </h1>
 
                                 <hr />

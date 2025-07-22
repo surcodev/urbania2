@@ -14,7 +14,10 @@ export async function POST(req: Request) {
         const baseUrl = process.env.URL_NGROK!;
 
         const user = await GetCurrentUserFromMongoDB();
+        console.log("---------------------");
         console.log(user.data?.id);
+        console.log("---------------------");
+        debugger;
 
         if (!user || !user.data?.id) {
             return NextResponse.json({ error: "Usuario no autenticado" }, { status: 401 });

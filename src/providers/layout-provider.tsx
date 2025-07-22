@@ -18,40 +18,17 @@ import Image from "next/image";
 import Link from "next/link";
 
 const userMenu = [
-  {
-    name: "Inicio",
-    path: "/",
-  },
-  {
-    name: "Propiedades",
-    path: "/user/properties",
-  },
-  {
-    name: "Cuenta",
-    path: "/user/account",
-  },
-  {
-    name: "Suscripción",
-    path: "/user/subscriptions",
-  },
-  {
-    name: "Consultas",
-    path: "/user/queries",
-  },
+  { name: "Inicio", path: "/" },
+  { name: "Propiedades", path: "/user/properties" },
+  { name: "Cuenta", path: "/user/account" },
+  { name: "Suscripción", path: "/user/subscriptions" },
+  { name: "Consultas", path: "/user/queries" },
 ];
+
 const adminMenu = [
-  {
-    name: "Inicio",
-    path: "/",
-  },
-  {
-    name: "Propiedades",
-    path: "/admin/properties",
-  },
-  {
-    name: "Users",
-    path: "/admin/users",
-  },
+  { name: "Inicio", path: "/" },
+  { name: "Propiedades", path: "/admin/properties" },
+  { name: "Users", path: "/admin/users" },
 ];
 
 function LayoutProvider({ children }: { children: React.ReactNode }) {
@@ -63,9 +40,13 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
 
   const isPublicRoute = ["sign-in", "sign-up"].includes(pathname.split("/")[1]);
   const isAdminRoute = pathname.split("/")[1] === "admin";
+  const hideHeader = pathname?.startsWith("/sign-in") || pathname?.startsWith("/sign-up");
 
-  const hideHeader =
-    pathname?.startsWith("/sign-in") || pathname?.startsWith("/sign-up");
+  const navLinks = [
+    { name: "Quienes somos", path: "/about-we" },
+    { name: "Alquiler", path: "/rent" },
+    { name: "Venta", path: "/sale" },
+  ];
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -75,7 +56,7 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
         if (response?.error) throw new Error(response.error.message);
         setCurrentUserData(response.data);
         if (response.data.isAdmin) {
-          setMenuToShow(adminMenu)
+          setMenuToShow(adminMenu);
         }
       } catch (error: any) {
         message.error(error.message);
@@ -93,37 +74,33 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
     return (
       <div className="lg:px-20 mt-4">
         <div className="flex items-center justify-between bg-white p-4 h-3">
-          <h1 className="text-xl text-black font-bold cursor-pointer" onClick={() => { router.push("/") }}>
+          <h1 className="text-xl text-black font-bold cursor-pointer" onClick={() => router.push("/")}>
             <Image
               src="/logo.png"
               alt="Urbania 2.0 Logo"
-              width={143}  // Ajusta el tamaño a tu gusto
+              width={143}
               height={52}
               priority
             />
           </h1>
 
           <div className="flex items-center space-x-4">
-            <div>
-              <Link href="/">
-                Inicio
-              </Link>
-            </div>
-            <div>
-              <Link href="/about-we">
-                Quienes somos
-              </Link>
-            </div>
-            <div>
-              <Link href="/rent">
-                Alquiler
-              </Link>
-            </div>
-            <div>
-              <Link href="/sale">
-                Venta
-              </Link>
-            </div>
+            {navLinks.map((link) => {
+              const isActive = pathname.startsWith(link.path);
+              return (
+                <Link
+                  key={link.name}
+                  href={link.path}
+                  className={`px-4 py-2 rounded transition duration-200 no-underline ${isActive
+                    ? "bg-[#faead0] text-black"
+                    : "text-black hover:bg-gray-100"
+                    }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+
             <SignedOut>
               <SignInButton>
                 <button className="bg-black text-white rounded px-4 py-2 hover:bg-gray-800 transition">
@@ -131,7 +108,9 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
                 </button>
               </SignInButton>
               <SignUpButton>
-                <button className="bg-black text-white rounded px-4 py-2 hover:bg-gray-800 transition">Registro</button>
+                <button className="bg-black text-white rounded px-4 py-2 hover:bg-gray-800 transition">
+                  Registro
+                </button>
               </SignUpButton>
             </SignedOut>
 
@@ -148,7 +127,9 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
                       })),
                     }}
                   >
-                    <Button className="text-primary hover:text-primary" type="link">{currentUserData?.username}</Button>
+                    <Button className="text-primary hover:text-primary" type="link">
+                      {currentUserData?.username}
+                    </Button>
                   </Dropdown>
                 )}
                 <UserButton
@@ -183,16 +164,8 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
     <div>
       {getHeader()}
       {getContent()}
-      {/* <div>
-        {loading ? (
-          <Loader />
-        ) : (
-          <div>{children}</div>
-        )}
-      </div> */}
     </div>
   );
-
 }
 
 export default LayoutProvider;

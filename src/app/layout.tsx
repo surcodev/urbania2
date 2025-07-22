@@ -38,7 +38,7 @@ export default async function RootLayout({
               {children}
             </LayoutProvider>
           </ThemeProvider>
-          <Footer />
+          {/* <Footer /> */}
         </body>
       </html>
     </ClerkProvider>

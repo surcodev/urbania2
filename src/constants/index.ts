@@ -74,7 +74,7 @@ export const subscriptionPlans = [
         ],
     },
     {
-        name: "Estándar",
+        name: "Standard",
         price: 10,
         propertiesLimit: 10,
         imagesPerPropertyLimit: 5,

@@ -19,7 +19,7 @@ export default function Page() {
             {/* Lado derecho: Imagen */}
             <div className="hidden md:block w-3/5">
                 <img
-                    src="login-background.jpg"
+                    src="login.png"
                     alt="Family house background"
                     className="h-full w-full object-cover"
                 />

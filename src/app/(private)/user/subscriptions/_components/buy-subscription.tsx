@@ -18,8 +18,6 @@ function BuySubScription({ plan }: { plan: any }) {
       });
       const data = await response.json();
 
-      console.log("Response from Mercado Pago:", data);
-
       if (response.ok && data.init_point) {
         // Redirige al usuario a Mercado Pago
         window.location.href = data.init_point;

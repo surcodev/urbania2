@@ -1,29 +1,33 @@
 "use server";
-
 import prisma from "@/config/db";
-import { GetCurrentUserFromMongoDB } from "./users";
 
 export const SaveSubscription = async ({
+    userId,
     paymentId,
     plan,
 }: {
+    userId: string;
     paymentId: string;
     plan: any;
 }) => {
     try {
-        const user = await GetCurrentUserFromMongoDB();
-        const payload: any = {
-            paymentId,
-            plan,
-            userId: user.data?.id,
-        };
+        if (!userId) {
+            throw new Error("Falta el userId");
+        }
+
         await prisma.subscription.create({
-            data: payload,
+            data: {
+                userId,
+                paymentId,
+                plan,
+            },
         });
+
         return {
-            message: "Subscription saved successfully",
+            message: "Suscripción guardada exitosamente",
         };
     } catch (error: any) {
+        console.error("❌ Error al guardar suscripción:", error.message);
         return {
             error: error.message,
         };
