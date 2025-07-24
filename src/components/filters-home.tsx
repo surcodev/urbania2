@@ -9,7 +9,7 @@ import { Button, Form, Input, InputNumber, Modal, Select, Tag } from "antd";
 import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-function Filters({ searchParams }: { searchParams: any }) {
+function FiltersHome({ searchParams }: { searchParams: any }) {
     const [showFiltersModal, setShowFiltersModal] = useState(false);
 
     const router = useRouter();
@@ -35,7 +35,7 @@ function Filters({ searchParams }: { searchParams: any }) {
             <div className="flex justify-between p-5 border rounded-sm border-solid border-gray-300 mb-5 items-center mt-5 bg-white">
                 <div>
                     {Object.keys(searchParams).length === 0 ? (
-                        <span className="text-black text-sm">No se aplicaron filtros </span>
+                        <span className="text-gray-500 text-sm">No se aplicaron filtros</span>
                     ) : (
                         <div className="flex flex-wrap gap-5">
                             {Object.keys(searchParams).map((key) => {
@@ -147,4 +147,4 @@ function Filters({ searchParams }: { searchParams: any }) {
     );
 }
 
-export default Filters;
+export default FiltersHome;

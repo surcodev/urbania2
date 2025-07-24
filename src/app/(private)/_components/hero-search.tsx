@@ -1,57 +1,51 @@
-'use client'
-import React, { useState } from 'react';
+'use client';
+import Filters from "@/components/filters";
+import React, { useEffect, useState } from 'react';
 
-export default function HeroSearch() {
-    const [tab, setTab] = useState('alquilar');
+export default function HeroSearch({ searchParams }: { searchParams: any }) {
+    const fullText = "Construye tu futuro, empieza por el lugar correcto";
+    const [displayedText, setDisplayedText] = useState('');
+    const [index, setIndex] = useState(0);
 
-    const tabs = ['Alquilar', 'Comprar', 'Proyectos'];
+    useEffect(() => {
+        if (index < fullText.length) {
+            const timeout = setTimeout(() => {
+                setDisplayedText((prev) => prev + fullText[index]);
+                setIndex((prev) => prev + 1);
+            }, 60);
+            return () => clearTimeout(timeout);
+        } else {
+            const delay = setTimeout(() => {
+                setDisplayedText('');
+                setIndex(0);
+            }, 5000);
+            return () => clearTimeout(delay);
+        }
+    }, [index]);
 
     return (
-        <div className='mt-4'>
-            <div className="relative bg-cover bg-center min-h-[400px]" style={{ backgroundImage: "url('/portada3.png')" }}>
+        <div className='mt-5 mb-5'>
+            <div
+                className="relative bg-cover bg-center min-h-[400px]"
+                style={{ backgroundImage: "url('/portada3.png')" }}
+            >
                 <div className="absolute inset-0 bg-black/25"></div>
 
-                <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 pt-12">
-                    <h1 className="text-3xl sm:text-4xl font-bold text-white mb-6">Construye tu futuro, empieza por el lugar correcto</h1>
+                <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 pt-12 text-center">
+                    <h1 className="text-4xl sm:text-5xl md:text-5xl font-bold mb-4">
+                        <span className="bg-gradient-to-r from-orange-400 to-black bg-clip-text text-transparent">
+                            {displayedText}
+                        </span>
+                        <span className="animate-blink text-white">|</span>
+                    </h1>
 
-                    <div className="bg-white rounded-xl p-4 flex flex-col sm:flex-row gap-4 w-full max-w-4xl shadow-lg">
-                        {/* Tabs */}
-                        <div className="flex gap-4">
-                            {tabs.map((t) => (
-                                <button
-                                    key={t}
-                                    onClick={() => setTab(t.toLowerCase())}
-                                    className={`font-medium text-sm px-2 pb-1 border-b-2 ${tab === t.toLowerCase()
-                                        ? 'border-green-700 text-green-700'
-                                        : 'border-transparent text-gray-600 hover:text-black'
-                                        }`}
-                                >
-                                    {t}
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* Filtros */}
-                        <div className="flex flex-1 flex-wrap sm:flex-nowrap items-center gap-2">
-                            {/* Select */}
-                            <select className="border rounded px-4 py-2 w-full sm:w-40 text-sm">
-                                <option>Departamento</option>
-                                <option>Casa</option>
-                                <option>Oficina</option>
-                            </select>
-
-                            {/* Input */}
-                            <input
-                                type="text"
-                                placeholder="Ingresa ubicaciones o características (ej: piscina)"
-                                className="border rounded px-4 py-2 flex-1 text-sm"
-                            />
-
-                            {/* Botón */}
-                            <button className="bg-green-800 text-white px-6 py-2 rounded hover:bg-green-900 transition">
-                                Buscar
-                            </button>
-                        </div>
+                    <p className="mt-6 max-w-4xl text-lg md:text-xl text-orange-900 drop-shadow-md">
+                        Conectamos personas con oportunidades inmobiliarias, facilitando el camino hacia la propiedad ideal de manera rápida, segura y confiable.
+                    </p>
+                    <div>
+                        <Filters
+                            searchParams={searchParams}
+                        />
                     </div>
                 </div>
             </div>

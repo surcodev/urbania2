@@ -157,7 +157,7 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
           No estás autorizado para ver esta página.
         </div>
       );
-    return <div className="py-5 lg:px-20 px-5">{children}</div>;
+    return <div>{children}</div>;
   };
 
   return (
